@@ -9,14 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:       #f3ede6;      /* 和紙色 */
+      --bg:       #f3ede6;
       --card:     #ffffff;
-      --rose:     #a06070;      /* ダスティローズ */
-      --rose-dk:  #7a4558;      /* 深い紅 */
-      --rose-lt:  #e8c4cc;      /* 淡い桜色 */
-      --ink:      #221e1b;      /* 墨色テキスト */
-      --ink-mid:  #5c4f49;      /* 中間テキスト */
-      --ink-lt:   #9c8b85;      /* 薄いテキスト */
+      --rose:     #a06070;
+      --rose-dk:  #7a4558;
+      --rose-lt:  #e8c4cc;
+      --ink:      #221e1b; /* 墨色テキスト */
+      --ink-mid:  #5c4f49; /* 中間テキスト */
+      --ink-lt:   #9c8b85;
       --border:   #ddc8c0;
       --sakura:   #d08898;
     }
@@ -129,10 +129,7 @@
     .c-tr { top:12px; right:12px; border-width:1px 1px 0 0; }
     .c-bl { bottom:12px; left:12px; border-width:0 0 1px 1px; }
 
-    /* 背景の大きな桜文字（ウォーターマーク） */
-    .card-body::after {
-      /* 四隅装飾のafterは上書きしないよう注意 → c-trで代用 */
-    }
+
     .watermark {
       position: absolute;
       bottom: -30px; right: -20px;
@@ -222,24 +219,22 @@
     .details {
       border: 1px solid var(--border);
       background: #fdf9f7;
-      padding: 22px 26px;
-      margin: 26px 0;
-    }
-    .detail-row {
-      display: flex;
-      align-items: baseline;
-      gap: 20px;
-      padding: 9px 0;
+      padding: 10px 10px;
+      margin: 10px 0;
     }
     .detail-row + .detail-row {
       border-top: 1px solid #f0e4de;
+    }
+    .detail-row {
+      padding: 16px 0;
+      text-align: center;
     }
     .d-label {
       font-size: 11px;
       letter-spacing: .2em;
       color: var(--rose);
-      white-space: nowrap;
-      min-width: 52px;
+      display: block;
+      margin-bottom: 6px;
     }
     .d-val {
       font-family: 'Shippori Mincho', serif;
@@ -292,7 +287,7 @@
       <div class="c-bl"></div>
       <div class="watermark">桜</div>
 
-      <p class="eyebrow">令和○年　成人式記念</p>
+      <p class="eyebrow">2027年　成人式記念</p>
 
       <div class="rule"><div class="rule-dot"></div></div>
 
@@ -307,43 +302,39 @@
 
       <p class="body-text">
         この度は、ご参加のご意思をいただき<br>
-        誠にありがとうございます。<br><br>
+        誠にありがとうございます。<br>
         成人を祝い、旧友との再会を楽しむ<br>
         素晴らしい夜をご一緒できることを<br>
         心より楽しみにしております。
       </p>
 
       <div class="details">
-        <!-- ▼▼▼ 日時・場所・会費を実際の情報に書き換えてください ▼▼▼ -->
         <div class="detail-row">
           <div class="d-label">日　時</div>
-          <div class="d-val">○年○月○日（○曜日）<br>19:00 〜 22:00</div>
+          <div class="d-val">2027年1月11日（月曜日）<br>18:00 〜 20:00</div>
         </div>
         <div class="detail-row">
           <div class="d-label">場　所</div>
-          <div class="d-val">○○レストラン ○階<br>東京都○○区○○1-2-3</div>
+          <div class="d-val">ホテルニューオータニ幕張　シェルハウス<br>
+          <a href="https://www.google.com/maps/place/%E3%83%9B%E3%83%86%E3%83%AB%E3%83%8B%E3%83%A5%E3%83%BC%E3%82%AA%E3%83%BC%E3%82%BF%E3%83%8B%E5%B9%95%E5%BC%B5/@35.6454671,140.0359017,645m/data=!3m1!1e3!4m9!3m8!1s0x6022821f814e851b:0x104933b564ba5558!5m2!4m1!1i2!8m2!3d35.6454671!4d140.0384766!16s%2Fg%2F120phrnr!5m1!1e1?entry=ttu&g_ep=EgoyMDI2MDYxNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
+            地図を見る →
+          </a>
+          </div>
         </div>
         <div class="detail-row">
-          <div class="d-label">会　費</div>
-          <div class="d-val">○,○○○円（当日受付にてお支払い）</div>
+          <div class="d-label">参　加　費</div>
+          <div class="d-val">一万円</div>
         </div>
-        <div class="detail-row">
-          <div class="d-label">服　装</div>
-          <div class="d-val">平服にてお越しください</div>
-        </div>
-        <!-- ▲▲▲ ここまで ▲▲▲ -->
       </div>
 
       <p class="body-text" style="font-size:13px; color:var(--ink-lt);">
         ご不明な点がございましたら<br>
-        幹事（○○）までお問い合わせください
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScOucSnJntbjfSyDL0qaRmYwzB_CLwxB7zfxlBTuC4HX3ceHQ/viewform?usp=header">お問い合わせフォーム</a>にてご質問ください
       </p>
-
-      <div class="footer-note">─ 幹事一同 ─</div>
 
       <div class="rule" style="margin-top:30px;"><div class="rule-dot"></div></div>
 
-      <p class="sig">成人式 同窓会実行委員会</p>
+      <p class="sig">─ 真砂中同窓会幹事団 ─</p>
     </div>
   </div>
 </div>
