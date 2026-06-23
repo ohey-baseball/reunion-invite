@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同窓会 招待状</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:       #f3ede6;      /* 和紙色 */
+      --card:     #ffffff;
+      --rose:     #a06070;      /* ダスティローズ */
+      --rose-dk:  #7a4558;      /* 深い紅 */
+      --rose-lt:  #e8c4cc;      /* 淡い桜色 */
+      --ink:      #221e1b;      /* 墨色テキスト */
+      --ink-mid:  #5c4f49;      /* 中間テキスト */
+      --ink-lt:   #9c8b85;      /* 薄いテキスト */
+      --border:   #ddc8c0;
+      --sakura:   #d08898;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Noto Serif JP', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── 和紙テクスチャ（背景） ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── 桜の花びら ── */
+    #sakura {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .petal {
+      position: absolute;
+      top: -16px;
+      border-radius: 50% 50% 50% 0;
+      background: var(--sakura);
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0) rotate(0deg) translateX(0);    opacity: .55; }
+      50%  { transform: translateY(50vh) rotate(220deg) translateX(28px); }
+      100% { transform: translateY(105vh) rotate(420deg) translateX(-8px); opacity: 0; }
+    }
+
+    /* ── ラッパー ── */
+    .wrap {
+      position: relative; z-index: 2;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 52px 20px 80px;
+    }
+
+    /* ── 上部の家紋風サークル ── */
+    .mon {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .mon-outer {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 1.5px solid var(--rose);
+      position: relative;
+      animation: breathe 5s ease-in-out infinite;
+    }
+    .mon-inner {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 1px solid var(--rose-lt);
+      color: var(--rose);
+      font-size: 20px;
+    }
+    @keyframes breathe {
+      0%,100% { box-shadow: 0 0 0 0 rgba(160,96,112,0); }
+      50%      { box-shadow: 0 0 0 8px rgba(160,96,112,.1); }
+    }
+
+    /* ── カード ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 32px rgba(122,69,88,.08), 0 1px 4px rgba(122,69,88,.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* カード上部のカラーバンド */
+    .card-band {
+      height: 5px;
+      background: linear-gradient(90deg, var(--rose-lt), var(--rose), var(--rose-lt));
+    }
+
+    /* 四隅の装飾 */
+    .card-body {
+      padding: 44px 40px 40px;
+      position: relative;
+    }
+    .card-body::before, .card-body::after,
+    .c-tr, .c-bl {
+      content: '';
+      position: absolute;
+      width: 16px; height: 16px;
+      border-color: var(--rose-lt);
+      border-style: solid;
+    }
+    .card-body::before { top:12px; left:12px;  border-width:1px 0 0 1px; }
+    .card-body::after  { bottom:12px; right:12px; border-width:0 1px 1px 0; }
+    .c-tr { top:12px; right:12px; border-width:1px 1px 0 0; }
+    .c-bl { bottom:12px; left:12px; border-width:0 0 1px 1px; }
+
+    /* 背景の大きな桜文字（ウォーターマーク） */
+    .card-body::after {
+      /* 四隅装飾のafterは上書きしないよう注意 → c-trで代用 */
+    }
+    .watermark {
+      position: absolute;
+      bottom: -30px; right: -20px;
+      font-size: 160px;
+      color: rgba(160,96,112,.04);
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+
+    /* ── 区切り線 ── */
+    .rule {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .rule::before, .rule::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose-lt), transparent);
+    }
+    .rule-dot {
+      width: 5px; height: 5px;
+      background: var(--rose);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── 上部ラベル ── */
+    .eyebrow {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: .35em;
+      color: var(--ink-lt);
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+
+    /* ── 招待者名 ── */
+    .name-block { text-align: center; padding: 18px 0; }
+    .name-label {
+      font-size: 11px;
+      letter-spacing: .25em;
+      color: var(--rose);
+      margin-bottom: 10px;
+    }
+    #guest-name {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(28px, 6vw, 44px);
+      font-weight: 600;
+      color: var(--rose-dk);
+      letter-spacing: .2em;
+      line-height: 1.4;
+      position: relative;
+      display: inline-block;
+    }
+    /* 名前の下線装飾 */
+    #guest-name::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose-lt), transparent);
+      margin-top: 8px;
+    }
+
+    /* ── 見出し ── */
+    .headline {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(18px, 4vw, 26px);
+      font-weight: 600;
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: .1em;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    /* ── 本文 ── */
+    .body-text {
+      font-size: 14px;
+      line-height: 2.5;
+      color: var(--ink-mid);
+      text-align: center;
+      letter-spacing: .06em;
+    }
+
+    /* ── 詳細ブロック ── */
+    .details {
+      border: 1px solid var(--border);
+      background: #fdf9f7;
+      padding: 22px 26px;
+      margin: 26px 0;
+    }
+    .detail-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 9px 0;
+    }
+    .detail-row + .detail-row {
+      border-top: 1px solid #f0e4de;
+    }
+    .d-label {
+      font-size: 11px;
+      letter-spacing: .2em;
+      color: var(--rose);
+      white-space: nowrap;
+      min-width: 52px;
+    }
+    .d-val {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 15px;
+      color: var(--ink);
+      letter-spacing: .04em;
+      line-height: 1.7;
+    }
+
+    /* ── フッター ── */
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-lt);
+      letter-spacing: .2em;
+      margin-top: 28px;
+    }
+    .sig {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 13px;
+      color: var(--ink-lt);
+      letter-spacing: .22em;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .card-body { padding: 36px 22px 32px; }
+      .detail-row { flex-direction: column; gap: 4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .petal, .mon-outer { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sakura"></div>
+
+<div class="wrap">
+  <div class="mon">
+    <div class="mon-outer">
+      <div class="mon-inner">✿</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-band"></div>
+    <div class="card-body">
+      <div class="c-tr"></div>
+      <div class="c-bl"></div>
+      <div class="watermark">桜</div>
+
+      <p class="eyebrow">令和○年　成人式記念</p>
+
+      <div class="rule"><div class="rule-dot"></div></div>
+
+      <div class="name-block">
+        <div class="name-label">ご招待</div>
+        <div id="guest-name">ゲスト　様</div>
+      </div>
+
+      <div class="rule"><div class="rule-dot"></div></div>
+
+      <p class="headline">同窓会のご案内</p>
+
+      <p class="body-text">
+        この度は、ご参加のご意思をいただき<br>
+        誠にありがとうございます。<br><br>
+        成人を祝い、旧友との再会を楽しむ<br>
+        素晴らしい夜をご一緒できることを<br>
+        心より楽しみにしております。
+      </p>
+
+      <div class="details">
+        <!-- ▼▼▼ 日時・場所・会費を実際の情報に書き換えてください ▼▼▼ -->
+        <div class="detail-row">
+          <div class="d-label">日　時</div>
+          <div class="d-val">○年○月○日（○曜日）<br>19:00 〜 22:00</div>
+        </div>
+        <div class="detail-row">
+          <div class="d-label">場　所</div>
+          <div class="d-val">○○レストラン ○階<br>東京都○○区○○1-2-3</div>
+        </div>
+        <div class="detail-row">
+          <div class="d-label">会　費</div>
+          <div class="d-val">○,○○○円（当日受付にてお支払い）</div>
+        </div>
+        <div class="detail-row">
+          <div class="d-label">服　装</div>
+          <div class="d-val">平服にてお越しください</div>
+        </div>
+        <!-- ▲▲▲ ここまで ▲▲▲ -->
+      </div>
+
+      <p class="body-text" style="font-size:13px; color:var(--ink-lt);">
+        ご不明な点がございましたら<br>
+        幹事（○○）までお問い合わせください
+      </p>
+
+      <div class="footer-note">─ 幹事一同 ─</div>
+
+      <div class="rule" style="margin-top:30px;"><div class="rule-dot"></div></div>
+
+      <p class="sig">成人式 同窓会実行委員会</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── 名前をURLパラメータから取得 ──
+  const params = new URLSearchParams(window.location.search);
+  const rawName = params.get('name');
+  const el = document.getElementById('guest-name');
+
+  if (rawName && rawName.trim()) {
+    el.textContent = decodeURIComponent(rawName) + '\u3000様';
+  }
+
+  // ── 桜の花びら生成 ──
+  const container = document.getElementById('sakura');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    const s = Math.random() * 7 + 4;
+    p.style.cssText = `
+      left:${Math.random() * 100}%;
+      width:${s}px; height:${s}px;
+      animation-duration:${Math.random() * 12 + 14}s;
+      animation-delay:${Math.random() * 20}s;
+      opacity:${Math.random() * 0.35 + 0.15};
+    `;
+    container.appendChild(p);
+  }
+</script>
+</body>
+</html>
